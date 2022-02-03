@@ -17,19 +17,29 @@ import Placeholder from "./Placeholder";
 function Index() {
   const [data, setData] = useState<any>({});
   const [location, setLocation] = useState<string>("");
+  const [feedback, setFeedback] = useState<string>("busque uma cidade");
+  const [bg, setBg] = useState<string>("clouds");
 
   const searchLocation = (event: any): any => {
     if (event.key === "Enter" && location !== "") {
-      Api(location).then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      });
+      Api(location)
+        .then((response) => {
+          setData(response.data);
+
+          setBg(response.data.weather[0].main.toLowerCase());
+        })
+        .catch((err) => {
+          setData({});
+          setFeedback(
+            `Cidade "${location}" não encontrada. ${err.response.data.cod} :(`
+          );
+        });
       setLocation("");
     }
   };
 
   return (
-    <Container>
+    <Container bg={bg}>
       <Search>
         <Input
           OC={(e: any) => setLocation(e.target.value)}
@@ -51,7 +61,7 @@ function Index() {
           </Bottom>
         </>
       ) : (
-        <Placeholder />
+        <Placeholder feedback={feedback} />
       )}
     </Container>
   );

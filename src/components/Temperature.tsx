@@ -13,7 +13,7 @@ function Temperature(props: any) {
       </div>
       <div>
         {formatTemp(props.main?.temp) > 25 ? (
-          <h5>um belo dia para ir à praia, use protetor</h5>
+          <h5>um dia que pode ser quente</h5>
         ) : (
           <h5>um dia fresco e/ou frio</h5>
         )}

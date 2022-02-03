@@ -1,10 +1,10 @@
 import React from "react";
 
-function Placeholder() {
+function Placeholder(props: any) {
   return (
     <div className="container">
       <div className="top">
-        <p>busque por uma cidade</p>
+        <p>{props.feedback}</p>
       </div>
     </div>
   );
