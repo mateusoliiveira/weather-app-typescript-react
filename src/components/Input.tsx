@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function Input(props: any) {
   const inputSearch = useRef<HTMLInputElement>(null);
-  const [cities, setCities] = useState<string[]>([
+  const [cities] = useState<string[]>([
     "procure por São Paulo",
     "procure por Vitória",
     "procure por Nova York",
@@ -41,6 +41,7 @@ function Input(props: any) {
 
   useEffect(() => {
     changePlaceholder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
