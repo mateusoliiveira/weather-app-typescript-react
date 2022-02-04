@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Place from "./Place";
 import Temperature from "./Temperature";
@@ -16,7 +16,10 @@ import Placeholder from "./Placeholder";
 
 function Index() {
   const [data, setData] = useState<any>({});
-  const [location, setLocation] = useState<string>("");
+  const [cityIsDefault] = useState<string>(
+    localStorage.getItem("myCitiesWeatherDEFAULT") || ""
+  );
+  const [location, setLocation] = useState<string>(cityIsDefault);
   const [feedback, setFeedback] = useState<string>("busque uma cidade");
   const [bg, setBg] = useState<string>("clouds");
 
@@ -25,7 +28,6 @@ function Index() {
       Api(location)
         .then((response) => {
           setData(response.data);
-
           setBg(response.data.weather[0].main.toLowerCase());
         })
         .catch((err) => {
@@ -38,13 +40,21 @@ function Index() {
     }
   };
 
+  useEffect(() => {
+    if (cityIsDefault !== "") {
+      let e = { key: "Enter" };
+      searchLocation(e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Container bg={bg}>
       <Search>
         <Input
           OC={(e: any) => setLocation(e.target.value)}
           OKP={searchLocation}
-          value={location || ""}
+          value={location || cityIsDefault || ""}
         />
       </Search>
       {Object.keys(data).length > 0 ? (
